@@ -10,14 +10,12 @@ def scoreOfDigit=20
 def scoreOfSpecialcharecters=30
 
 def doesPasswordContain(List characterlist, String inputPassword,int score) {
-
     def characterMap = [:]
     for (int i = 0; i < characterlist.size(); i++) {
          def currentchar = characterlist[i]
         characterMap.putAt(currentchar, 0)
     }
     for (int i = 0; i < inputPassword.length(); i++) {
-
         if (characterMap[inputPassword[i]] != null) {
             return score
         }
