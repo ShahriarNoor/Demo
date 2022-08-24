@@ -25,7 +25,7 @@ def maplower1=createmap(lowercase,maplower)
 def mapupper1=createmap(uppercase,mapupper)
 def mapdigit1=createmap(digit,mapdigit)
 def mapspchar1=createmap(spchar,mapspchar)
-def input = 'AAaa12@#'
+def input = 'AAAAAAA'
 def getstrength(maplower1) {
     def testcontain = false
     //input = 'AAaa12@#'
