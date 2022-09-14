@@ -18,7 +18,6 @@ def configurableList=[
          characterList : ['!','@','#','$','%','^','&','*'],
          score: 30,
          type : "characterChecker"],
-
         [criteria : "lengthChecker",
          minLength: 8,
          score: 10,
