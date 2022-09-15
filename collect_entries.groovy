@@ -230,92 +230,54 @@ import groovy.transform.Field
         ]
 
 ]
-/*def getProductCost(productID) {
-      def productCostMap = product_Cost.find { it.ProductID == productID}
-        return productCostMap.getAt("Cost")
 
-    }
-
-println(getProductCost('ARK-0003'))
-
-
-def getProductLabel(def productID){
-        def productsMap = products.find{
-                it.ProductID == productID}
-     return productsMap.getAt("Label")
-}
-println(getProductLabel('ARK-0003'))
-
-def getCustomerAddress(def customerID){
-        def customerMap = customers.find{
-                it.CustomerID == customerID}
-        return customerMap.getAt("Address")
-}
-println(getCustomerAddress('CS-0002'))
-
-
-def getProductAttribute(String productId, List attributeTable, String attribute){
-        def attributeMap = attributeTable.find{it.ProductID == productId}
-        return attributeMap.getAt(attribute)
-}
-println(getProductAttribute('ARK-0003',products,'Industry'))
-
-
-
-def getProductAttribute(String Id, List attributeTable, String attribute,String key){
-        def attributeMap = attributeTable.find{it.(key)== Id}
-        return attributeMap.getAt(attribute)
-}
-println(getProductAttribute('Chemicals',products,'ProductID','Industry'))*/
 
 
 
 def getInvoicePrice(def productID){
-        def costMap=product_Cost.find{it.ProductID == productID}
-        def cost=costMap.getAt('Cost')
-        def productsMap=products.find{it.ProductID == productID}
-        def productGroup=productsMap.getAt("ProductGroup")
-        def adjustmentMap = cost_Plus_Price.find{it.ProductGroup == productGroup}
-        def adjustment=adjustmentMap.getAt("Adjustment")
-        def basePrice=cost+adjustment
-        def discountPriceMap=price_Discount.find{it.ProductID == productID}
-         def discount=discountPriceMap.getAt("Discounts")
-        discount=discount.substring(0,discount.length()-1) as float
-        def packgingAdjustMap=packaging_Adjustment.find{it.ProductGroup == productGroup}
-         packgingAdjustment=packgingAdjustMap.getAt("PackagingAdjustment")
-       packgingAdjustment=packgingAdjustment.substring(0,packgingAdjustment.length()-1) as float
+            def costMap=product_Cost.find{it.ProductID == productID}
+            def cost=costMap.getAt('Cost')
+            def productsMap=products.find{it.ProductID == productID}
+            def productGroup=productsMap.getAt("ProductGroup")
+            def adjustmentMap = cost_Plus_Price.find{it.ProductGroup == productGroup}
+            def adjustment=adjustmentMap.getAt("Adjustment")
+            def basePrice=cost+adjustment
+            def discountPriceMap=price_Discount.find{it.ProductID == productID}
+            def discount=discountPriceMap.getAt("Discounts")
+            discount=discount.substring(0,discount.length()-1) as float
 
-        def warehouseAdjustMap=warehouse_Adjustment.find{it.ProductGroup == productGroup}
-        warehouseAdjustment=warehouseAdjustMap.getAt("WarehouseAdjustment")
-         warehouseAdjustment=warehouseAdjustment.substring(0,warehouseAdjustment.length()-1) as float
-        def invoicePrice=basePrice-(discount*basePrice/100)+((packgingAdjustment*basePrice)/100)+((warehouseAdjustment*basePrice)/100)
+            def packgingAdjustMap=packaging_Adjustment.find{it.ProductGroup == productGroup}
+            packgingAdjustment=packgingAdjustMap.getAt("PackagingAdjustment")
+            packgingAdjustment=packgingAdjustment.substring(0,packgingAdjustment.length()-1) as float
 
-        def packgingCostMap=packaging_Cost.find{it.ProductGroup == productGroup}
-        packgingCost=packgingCostMap.getAt("PackagingCost")
-        packgingCost=packgingCost.substring(0,packgingCost.length()-1) as float
-        def warehouseCostMap=warehouse_Cost.find{it.ProductGroup == productGroup}
-        wareHousecost=warehouseCostMap.getAt("WarehouseCost")
-        wareHousecost=wareHousecost.substring(0,wareHousecost.length()-1) as float
+            def warehouseAdjustMap=warehouse_Adjustment.find{it.ProductGroup == productGroup}
+            warehouseAdjustment=warehouseAdjustMap.getAt("WarehouseAdjustment")
+            warehouseAdjustment=warehouseAdjustment.substring(0,warehouseAdjustment.length()-1) as float
+            def invoicePrice=basePrice-(discount*basePrice/100)+((packgingAdjustment*basePrice)/100)+((warehouseAdjustment*basePrice)/100)
 
-        def promotionDiscountMap=promotion_Discount.find{it.ProductID == productID}
-        def promotionType=promotionDiscountMap.getAt("PromotionType")
-        if(promotionType=="Absolute"){
-                def promotionDiscount=promotionDiscountMap.getAt("PromotionAmount")
-                def netPrice=(invoicePrice-((packgingCost*basePrice)/100)-((wareHousecost*basePrice)/100)-promotionDiscount)
-        }
-        else{
-                def promotionDiscount=promotionDiscountMap.getAt("PromotionAmount")
-                promotionDiscount=promotionDiscount.substring(0,promotionDiscount.length()-1) as float
-                def netPrice=(invoicePrice-((packgingCost*basePrice)/100)-((wareHousecost*basePrice)/100)-((promotionDiscount*basePrice)/100))
-        }
+            def packgingCostMap=packaging_Cost.find{it.ProductGroup == productGroup}
+            packgingCost=packgingCostMap.getAt("PackagingCost")
+            packgingCost=packgingCost.substring(0,packgingCost.length()-1) as float
+            def warehouseCostMap=warehouse_Cost.find{it.ProductGroup == productGroup}
+            wareHousecost=warehouseCostMap.getAt("WarehouseCost")
+            wareHousecost=wareHousecost.substring(0,wareHousecost.length()-1) as float
+
+            def promotionDiscountMap=promotion_Discount.find{it.ProductID == productID}
+            def promotionType=promotionDiscountMap.getAt("PromotionType")
+            if(promotionType=="Absolute"){
+                    def promotionDiscount=promotionDiscountMap.getAt("PromotionAmount")
+                    def netPrice=(invoicePrice-((packgingCost*basePrice)/100)-((wareHousecost*basePrice)/100)-promotionDiscount)
+            }
+            else{
+                    def promotionDiscount=promotionDiscountMap.getAt("PromotionAmount")
+                    promotionDiscount=promotionDiscount.substring(0,promotionDiscount.length()-1) as float
+                    def netPrice=(invoicePrice-((packgingCost*basePrice)/100)-((wareHousecost*basePrice)/100)-((promotionDiscount*basePrice)/100))
+            }
 
 
-}
-println(getInvoicePrice('ARK-0004'))
+    }
+            println(getInvoicePrice('ARK-0004'))
 
-/*String number ="1.234%"
-
-println(number.substring(0,number.length()-1))*/
 
 
 
