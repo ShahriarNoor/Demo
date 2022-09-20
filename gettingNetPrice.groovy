@@ -263,14 +263,28 @@ def getPackagingorWarehouseCost(String productGroup, List costlist,String costTy
         PackagingorWarehouseCost=basePrice*(( PackagingorWarehouseCost.substring(0,PackagingorWarehouseCost.length()-1))as BigDecimal)/100
 
 }
-def getPromotionDiscount(String productID,List promotionList,String promotionType, BigDecimal invoicePrice,BigDecimal packagingCost,BigDecimal wareHouseCost){
+
+def getPromotionalDiscount(String productID,List promotionDiscountlist ,String promotionType,BigDecimal basePrice){
+    def promotionalDiscountMap=promotionDiscountlist.find{it.ProductID == productID}
+    if(promotionType=="Absolute"){
+        def promotionDiscount=promotionalDiscountMap.getAt("PromotionAmount") as BigDecimal
+       return promotionDiscount
+    }
+
+
+
+
+    else{
+        def promotionDiscount=promotionalDiscountMap.getAt("PromotionAmount")
+        promotionDiscount=basePrice* ((promotionDiscount.substring(0,promotionDiscount.length()-1))as BigDecimal)/100
+        return promotionDiscount
+    }
 
 
 
 
 
 }
-
 
 
 
@@ -284,3 +298,8 @@ BigDecimal invoicePrice=getinvoicePrice(basePrice,productDiscount,packagingAdjus
 BigDecimal packagingCost=getPackagingorWarehouseCost('Office Essentials',packaging_Cost,'PackagingCost',basePrice)
 BigDecimal wareHouseCost=getPackagingorWarehouseCost('Office Essentials',warehouse_Cost,'WarehouseCost',basePrice)
 
+BigDecimal promotionalDiscount=getPromotionalDiscount("ARK-0002",promotion_Discount,"Absolute", basePrice)
+BigDecimal netPrice=( invoicePrice-packagingCost-wareHouseCost-promotionalDiscount)
+println(basePrice)
+println(invoicePrice)
+println(netPrice)
