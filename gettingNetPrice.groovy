@@ -241,10 +241,10 @@ def getbasePrice(String productID){
         def basePrice=(cost+adjustment)
         return basePrice
 }
-def getDiscount(String productID){
+def getDiscount(String productID,BigDecimal basePrice){
         def discountPriceMap=price_Discount.find{it.ProductID == productID}
         def discount=discountPriceMap.getAt("Discounts")
-        discount=discount.substring(0,discount.length()-1) as BigDecimal/100
+        discount=basePrice*((discount.substring(0,discount.length()-1)) as BigDecimal)/100
         return discount
 
 }
@@ -289,7 +289,7 @@ def getPromotionalDiscount(String productID,List promotionDiscountlist ,String p
 
 
 BigDecimal basePrice=getbasePrice("ARK-0002")
-BigDecimal productDiscount=getDiscount("ARK-0002")
+BigDecimal productDiscount=getDiscount("ARK-0002",basePrice)
 //println(getPackagingorWarehouseAdjustment('Homeware',packaging_Adjustment,'PackagingAdjustment'))
 BigDecimal packagingAdjustment=getPackagingorWarehouseAdjustment('Office Essentials',packaging_Adjustment,'PackagingAdjustment',basePrice)
 BigDecimal wareHouseAdjustment=getPackagingorWarehouseAdjustment('Office Essentials',warehouse_Adjustment,'WarehouseAdjustment',basePrice)
@@ -301,5 +301,11 @@ BigDecimal wareHouseCost=getPackagingorWarehouseCost('Office Essentials',warehou
 BigDecimal promotionalDiscount=getPromotionalDiscount("ARK-0002",promotion_Discount,"Absolute", basePrice)
 BigDecimal netPrice=( invoicePrice-packagingCost-wareHouseCost-promotionalDiscount)
 println(basePrice)
+println(productDiscount)
+println(packagingAdjustment)
+println(wareHouseAdjustment)
 println(invoicePrice)
+println(packagingCost)
+println(wareHouseCost)
+println(promotionalDiscount)
 println(netPrice)
