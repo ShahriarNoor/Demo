@@ -1,3 +1,4 @@
+//https://www.hackerrank.com/challenges/mars-exploration/problem?isFullScreen=true
 def inputString= System.in.newReader().readLine()
 def getChangedWord(String inputString){
     int counter = 0
