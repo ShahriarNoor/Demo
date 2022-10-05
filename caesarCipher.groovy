@@ -1,4 +1,6 @@
+//https://www.hackerrank.com/challenges/caesar-cipher-1/problem?isFullScreen=true
 def inputString= System.in.newReader().readLine()
+int k=System.in.newReader().readLine() as int
 def findingCaesarCipher(String inputString,int k){
     String answer=" "
     k=k%26
@@ -23,7 +25,7 @@ def findingCaesarCipher(String inputString,int k){
     return answer
 
 }
-println(findingCaesarCipher(inputString,4))
+println(findingCaesarCipher(inputString,k))
 
 
 
